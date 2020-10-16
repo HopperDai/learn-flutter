@@ -109,7 +109,8 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.blue,
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return NewRoute();
+                  // return NewRoute();
+                  return RouterTestRoute();
                 }));
               },
             ),
@@ -136,5 +137,57 @@ class NewRoute extends StatelessWidget {
         child: Text('this is new route page'),
       ),
     );
+  }
+}
+
+class TipRoute extends StatelessWidget {
+  TipRoute({Key key, @required this.text}) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('路由传参'),
+        ),
+        body: Padding(
+          padding: EdgeInsets.all(18),
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                Text(text),
+                RaisedButton(
+                  onPressed: () => Navigator.pop(context, '我是返回值'),
+                  child: Text('返回'),
+                )
+              ],
+            ),
+          ),
+        ));
+  }
+}
+
+class RouterTestRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('test route'),
+        ),
+        body: Center(
+          child: RaisedButton(
+            onPressed: () async {
+              var result = await Navigator.push(context,
+                  MaterialPageRoute(builder: (context) {
+                return TipRoute(
+                  text: '页面跳转时的参数',
+                );
+              }));
+              print('路由返回值：$result');
+            },
+            child: Text('打开测试页'),
+          ),
+        ));
   }
 }
